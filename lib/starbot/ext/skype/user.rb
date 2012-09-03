@@ -1,6 +1,6 @@
-require 'skype/events'
+require 'rype/events'
 
-module Skype
+module Rype
   class User
     module BuddyStatus
       # never been in contact list.
@@ -12,13 +12,13 @@ module Skype
       # added to contact list.
       INLIST      = 3
     end # module::BuddyStatus
-    
-    
+
+
     class << self
       def users
         @users ||= []
       end # users
-      
+
       def friends
         @friends ||= []
         Api.invoke("SEARCH FRIENDS") do |resp|
@@ -28,7 +28,7 @@ module Skype
               if (known = users.find{|u| u.is_a?(User) && u.id == user_id })
                 @friends.push(known) unless @friends.include?(known)
               else
-                new(user_id).tap do |u| 
+                new(user_id).tap do |u|
                   @friends.push(u)
                   @users.push(u)
                 end
@@ -39,16 +39,16 @@ module Skype
         end #  |resp|
         @friends
       end # friends
-      
+
     end # class << self
-    
-    
+
+
     attr_reader :id
-    
+
     def initialize(id)
       @id = id
     end # initialize(username)
-    
+
     def get_props(&blk)
       return unless block_given?
       fullname do |fn|
@@ -63,7 +63,7 @@ module Skype
         end #  |bs|
       end #  |fn|
     end # get_props(&blk)
-    
+
     def handle
       @id
     end
@@ -87,18 +87,18 @@ module Skype
       return unless block_given?
       get_property('ONLINESTATUS') { |bs| yield bs.to_i }
     end
-    
+
     # Send an authorization request to the User.
     # If the request is approved yield to a given block.
     def request_authorization(msg = "Please authorize me", &blk)
       return unless block_given?
-      Skype::Events.watch_until(:buddy_status, @id) do |user_id, bstatus|
+      Rype::Events.watch_until(:buddy_status, @id) do |user_id, bstatus|
         bstatus == BuddyStatus::INLIST ? true.tap{ yield(bstatus) } : false
       end #  |user_id, bstatus|
 
       Api.invoke("SET USER #{@id} BUDDYSTATUS 2 #{msg}")
     end # request_authorization(&blk)
-    
+
   private
     def get_property(property, &block)
       return unless block_given?
@@ -108,4 +108,4 @@ module Skype
     end # get_propery
 
   end # class::User
-end # module::Skype
+end # module::Rype

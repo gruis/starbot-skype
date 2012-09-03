@@ -1,6 +1,6 @@
 source :rubygems
 
-gem 'skype', :git => 'https://github.com/nfelger/skype.git'
+gem 'rype', :git => 'https://github.com/nfelger/rype.git'
 gem 'starbot', :git => 'https://github.com/simulacre/starbot.git'
 gem 'starbot-skype', :path => File.dirname(__FILE__)
 

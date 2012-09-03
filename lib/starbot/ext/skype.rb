@@ -1,7 +1,7 @@
-require 'starbot/ext/skype/chatmessage'
-require 'starbot/ext/skype/chat'
-require 'starbot/ext/skype/user'
-require 'starbot/ext/skype/events'
-require 'skype'
+require 'starbot/ext/rype/chatmessage'
+require 'starbot/ext/rype/chat'
+require 'starbot/ext/rype/user'
+require 'starbot/ext/rype/events'
+require 'rype'
 # Prevents console logging
-require 'starbot/ext/skype/api'
+require 'starbot/ext/rype/api'
